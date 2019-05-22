@@ -1,0 +1,13 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.7 }
+
+\bibitem[Dua e Graff 2017]{Dua:2019}
+\abntrefinfo{Dua e Graff}{DUA; GRAFF}{2017}
+{DUA, D.; GRAFF, C. \emph{{UCI} Machine Learning Repository}. 2017.
+Dispon{\'\i}vel em: \url{http://archive.ics.uci.edu/ml}.}
+
+\end{thebibliography}

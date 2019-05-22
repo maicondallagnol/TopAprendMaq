@@ -1,0 +1,69 @@
+\chapter{Desenvolvimento}\label{cap_desenv}
+
+Inicialmente foram escolhidos dois \textit{datasets} com diferentes aspectos. O primeiro a ser abordado refere-se a riscos de crédito de 1000 instancias~\cite{Dua:2019}, onde cada uma contem dados como status da conta corrente, histórico de crédito, objetivo do crédito, quantidade de crédito, entre outros atributos (20 atributos no total) e um atributo alvo, o risco de crédito: bom, equivalente a 0, e ruim, equivalente a 1.
+
+O segundo dataset corresponde a fonemas e é composto de atributos abstratos cujo atributo alvo é a classe de som nasais ou orais, para o dataset em questão classe 1 e 2, respectivamente. 
+
+\section{Pré-processamento e Visualização}
+Para ambos \textit{datasets} utilizou-se de um biblioteca do Python chamada Pandas Profiling que descreve e faz uma pré análise dos \textit{datasets}, como linhas duplicadas, dados faltantes, grande variância entre os dados.
+
+A partir desta análise notou-se que em ambos datasets o conjunto de classes é desbalanceado, entre elas de forma que em média $1/3$ pertence a uma classe e $2/3$ a outra. Para o \textit{dataset} de crédito optou-se por utiliza-lo no formato que carregado, enquanto para o dos fonemas realizou-se um rebalanceamento das classes por \textit{under-sample}.
+
+Para o \textit{dataset} de crédito notou-se que os dados em ambas classes estão bem distribuídos entre os atributos de modo que não há um atributo que separe os dados de forma linear. No \textit{dataset} de fonemas há um ligeira separação dos dados podendo ser visível ao plotar o atributo V1 contra os outros. Visualizando os correlogramas não notou-se nenhum atributo com alta correlação com as classes.
+
+Antes da aplicação dos algoritmos de classificação para o \textit{dataset} de crédito necessitou-se de uma transformação, uma vez que os valores de certos atributos correspondem a dados categóricos, portanto para estes aplicou-se um algoritmo chamado \textit{LabelEncoder} que transformou dados categóricos em valores discretos. Dado a transformação para valores numéricos, utilizou-se de um algoritmo escalonador(\textit{StandardScaler}), deixando todos atributos num alcance igualitário. Estas transformações não foram necessárias para o fonemas uma vez que o dataset já se encontrava em formato numérico e escalonado.
+
+\section{Classificação}
+Para classificação dos algoritmos tomou-se como método de avaliação o \textit{K-Fold Cross Validation} com K=10. Utilizando então o K-Fold tomou-se 4 algoritmos diferentes KNN, GaussianNB, DecisionTreeClassifier e SVM, todos estes implementados pela biblioteca Scikit-learn.
+
+Para o dataset de crédito aplicou-se os algoritmos no dataset completo e com certos atributos, em ambos o dataset foi escalonado. Para aplicação dos algoritmos nos fonemas optou-se por 3 métodos, primeiro utilizando o conjunto de dados completo sem nenhum balanceamento, utilizando o conjunto dados com redução espacia (no caso utilizou-se PCA) e o conjunto de dados balanceado.
+
+\section{Avaliação}
+
+Para avaliar os resultados obtidos pelos algoritmos tomou-se a média das k-execuções dos algoritmos. Os resultados são apresentados na Tabela~\ref{resul_cred} e Tabela~\ref{resul_fonema}, em que as cédulas verdes correspondem aos maiores valores para a medida de de avaliação entre todos as execuções dos \textit{datasets} e as cédulas vermelhas, as piores.
+
+\begin{table}[h]
+	\begin{tabular}{|l|l|l|l|l|l|l|l|}
+		\hline
+		\cellcolor[HTML]{333333}{\color[HTML]{FFFFFF} Cru}         & Acurácia                       & Recall                         & Precisão                       & F1                             & Roc                            & Kappa                          & Acurácia Balanceada            \\ \hline
+		KNN                                                        & 0.6670                         & 0.7861                         & 0.7485                         & 0.7661                         & 0.5876                         & 0.1792                         & 0.5876                         \\ \hline
+		Gauss                                                      & 0.6890                         & 0.7619                         & \cellcolor[HTML]{32CB00}0.7950 & 0.7730                         & \cellcolor[HTML]{32CB00}0.6488 & 0.2805                         & \cellcolor[HTML]{32CB00}0.6488 \\ \hline
+		Tree                                                       & 0.6950                         & 0.7719                         & 0.7855                         & 0.7771                         & 0.6412                         & \cellcolor[HTML]{32CB00}0.2811 & 0.6412                         \\ \hline
+		SVM                                                        & \cellcolor[HTML]{32CB00}0.7460 & 0.9375                         & 0.7573                         & \cellcolor[HTML]{32CB00}0.8370 & 0.6182                         & 0.2780                         & 0.6182                         \\ \hline
+		\cellcolor[HTML]{333333}{\color[HTML]{FFFFFF} Selecionado} &                                &                                &                                &                                &                                &                                &                                \\ \hline
+		KNN                                                        & 0.6280                         & 0.7341                         & 0.7352                         & 0.7334                         & 0.5578                         & 0.1127                         & 0.5578                         \\ \hline
+		Gauss                                                      & 0.7040                         & 0.9404                         & 0.7220                         & 0.8161                         & 0.5476                         & 0.1180                         & 0.5476                         \\ \hline
+		Tree                                                       & \cellcolor[HTML]{CB0000}0.6080 & \cellcolor[HTML]{CB0000}0.7045 & 0.7254                         & \cellcolor[HTML]{CB0000}0.7139 & 0.5426                         & 0.0833                         & 0.5426                         \\ \hline
+		SVM                                                        & 0.6940                         & \cellcolor[HTML]{32CB00}0.9506 & \cellcolor[HTML]{CB0000}0.7111 & 0.8128                         & \cellcolor[HTML]{CB0000}0.5238 & \cellcolor[HTML]{CB0000}0.0586 & \cellcolor[HTML]{CB0000}0.5238 \\ \hline
+	\end{tabular}
+	\caption{Resultados \textit{dataset} de crédito.}
+	\label{resul_cred}
+\end{table}
+
+\begin{table}[h]
+	\begin{tabular}{|l|l|l|l|l|l|l|l|}
+		\hline
+		\cellcolor[HTML]{000000}{\color[HTML]{FFFFFF} Cru}        & Acurácia                       & Recall                         & Precisão                       & F1                             & Roc                            & Kappa                          & Acurácia Balanceada            \\ \hline
+		KNN                                                       & \cellcolor[HTML]{32CB00}0.9032 & \cellcolor[HTML]{32CB00}0.9449 & \cellcolor[HTML]{32CB00}0.9204 & \cellcolor[HTML]{32CB00}0.9324 & \cellcolor[HTML]{32CB00}0.8734 & \cellcolor[HTML]{32CB00}0.7612 & \cellcolor[HTML]{32CB00}0.8734 \\ \hline
+		Gauss                                                     & 0.7602                         & 0.7735                         & 0.8731                         & 0.82                           & 0.7502                         & 0.4636                         & 0.7502                         \\ \hline
+		Tree                                                      & 0.8712                         & 0.9108                         & 0.9072                         & 0.9090                         & 0.8432                         & 0.6879                         & 0.8432                         \\ \hline
+		SVM                                                       & 0.8487                         & 0.8964                         & 0.8903                         & 0.8933                         & 0.8148                         & 0.6327                         & 0.8148                         \\ \hline
+		\cellcolor[HTML]{000000}{\color[HTML]{FFFFFF} Balanceado} &                                &                                &                                &                                &                                &                                &                                \\ \hline
+		KNN                                                       & 0.8701                         & 0.8684                         & 0.8721                         & 0.8699                         & 0.8702                         & 0.7395                         & 0.8702                         \\ \hline
+		Gauss                                                     & \cellcolor[HTML]{CB0000}0.7442 & \cellcolor[HTML]{CB0000}0.6632 & \cellcolor[HTML]{CB0000}0.7925 & \cellcolor[HTML]{CB0000}0.7212 & 0.7440                         & 0.4875                         & 0.7440                         \\ \hline
+		Tree                                                      & 0.8365                         & 0.8388                         & 0.8372                         & 0.8374                         & 0.8363                         & 0.6722                         & 0.8363                         \\ \hline
+		SVM                                                       & 0.8438                         & 0.7711                         & 0.9033                         & 0.8310                         & 0.8440                         & 0.6871                         & 0.8440                         \\ \hline
+		\cellcolor[HTML]{000000}{\color[HTML]{FFFFFF} PCA}        &                                &                                &                                &                                &                                &                                &                                \\ \hline
+		KNN                                                       & 0.7802                         & 0.8450                         & 0.8441                         & 0.8445                         & 0.7338                         & 0.4679                         & 0.7338                         \\ \hline
+		Gauss                                                     & 0.7792                         & 0.7870                         & 0.8881                         & 0.8344                         & 0.7732                         & 0.5058                         & 0.7732                         \\ \hline
+		Tree                                                      & 0.7755                         & 0.8364                         & 0.8449                         & 0.8405                         & \cellcolor[HTML]{CB0000}0.7318 & \cellcolor[HTML]{CB0000}0.4606 & \cellcolor[HTML]{CB0000}0.7318 \\ \hline
+		SVM                                                       & 0.7952                         & 0.8322                         & 0.8723                         & 0.8517                         & 0.7683                         & 0.5199                         & 0.7683                         \\ \hline
+	\end{tabular}
+	\caption{Resultados \textit{dataset} de fonemas.}
+	\label{resul_fonema}
+\end{table}
+
+
+Para o \textit{dataset} de crédito, Tabela~\ref{resul_cred}, é nítido que os melhores resultados foram obtidos pelo \textit{dataset} completo, pois 6 das 7 melhores medidas de avaliação estão nele, enquanto todos os menores valores estão no \textit{dataset} com atributos selecionados. Entre os algoritmos, destaca-se GaussianNB e SVM, com 3 e 2, respectivamente, dos maiores valores obtidos. Ainda neste \textit{dataset} é possivel notar a diferença entre a Acurácia e Acurácia Balanceada, em todos os casos esta segunda obteve valores mais baixos que a primeira, isto ocorre pois como há um desbalanço de classe os resultados tendem a ficar "maquiados", contudo a acurácia balanceada tende a diminuir isto, mostrando um valor de acurácia mais realista.
+
+Para o \textit{dataset} de fonemas, Tabela~\ref{resul_fonema}, o algoritmo KNN aplicado nos dados sem nenhum balanceamento ou redução espacial obteve os melhores resultados em todas as medidas, enquanto os piores ficaram divididos entre GaussianNB aplicado nos dados balanceados e DecisionTree aplicado nos dados com a transformação do PCA. Neste caso é possivel notar ainda que os resultados da acurácia e acurácia balanceada no caso em que o \textit{dataset} está balanceado, a diferença entre elas é ínfima, diferente dos outros dados que variam entre $0,5\%$ à $5\%$
