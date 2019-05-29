@@ -1,0 +1,94 @@
+\chapter{Desenvolvimento}\label{cap_desenv}
+
+Para o desenvolvimento das atividades inicialmente foram escolhidos duas bases bases de dados. A primeira base a ser utilizada corresponde a dados de uma central elétrica de ciclo combinado ao longo de 6 anos tendo informações como temperatura, pressão ambiente, umidade, vácuo de exaustão e saída de energia elétrica horária líquida, sendo este ultimo o escolhido para ser predito; A segunda base é composta do histórico de tempo de 2006 a 2016 em Szeged, Hungria, contendo hora, temperatura, umidade, entre outros atributos, sendo a temperatura escolhida como atributo a ser predito.
+
+\section{Pré-processamento e Visualização}
+Para ambos \textit{datasets} utilizou-se de um biblioteca do Python chamada Pandas Profiling que descreve e faz uma pré análise dos \textit{datasets}, como linhas duplicadas, dados faltantes, grande variância entre os dados.
+
+A partir desta análise notou-se que no dataset do tempo há duas variáveis com alta correlação, portanto retirou-se uma delas. Também na segunda base, há diversos atributos categóricos que foram removidos a fim de agilizar o treinamento dos algoritmos (também diminuiu-se o dataset de mais 94000 para 10000), visto que o tempo de treinamento dos algoritmos é longo.
+
+Em ambas visualizações dos \textit{datasets} é possivel notar uma certa linearidade entre os atributos PE e AT, para o primeiro dataset, e Humidity e Temperature, no segundo, deste modo, escolheu-se esses atributos para serem usados na visualização dos itens preditos e reais.
+
+Para aplicação dos algoritmos de regressão os dados foram escalonados utilizando o StandardScaler.
+
+Para separação de treino e teste utilizou-se uma divisão de $20\%$ para teste e $80\%$ para treino, de forma aleatória.
+
+\section{Regressão}
+
+Na aplicação dos algoritmos de regressão foram utilizados os algoritmos de regressão linear, regressão polinomial, SVR, utilizando os kernels linear, sigmoide, RBF e polinomial, rede neural MLP. Alguns algoritmos tiveram seus parâmetros \textit{default} alterados para outros valores, os demais permanecem inalterados.
+
+
+\section{Avaliação}
+
+Os resultados foram medidos para os dados de treino e de teste de ambas bases. Para a primeira base a Tabela~\ref{ceteste} corresponde aos resultados da base de teste e a Tabela~\ref{cetreino}, aos dados de treino.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Algoritmo                & EQM    & $R^2$     & REQM   & SEQ        \\ \hline
+		Regressão Linear - Teste & 0,068  & 0,932  & 0,261  & 130,01     \\ \hline
+		SVR - RBF - Teste        & 0,054  & 0,946  & 0,231  & 102,41     \\ \hline
+		SVR - Linear - Teste     & 0,068  & 0,932  & 0,261  & 130,454    \\ \hline
+		SVR - Sigmoide - Teste   & 298,19 & -0,027 & 17,268 & 570735,341 \\ \hline
+		SVR - Polinomial - Teste & 0,212  & 0,787  & 0,461  & 406,592    \\ \hline
+		MLP - Teste              & 0,053  & 0,946  & 0,231  & 102,359    \\ \hline
+	\end{tabular}
+	\caption{Avaliação dos dados de teste da central elétrica.}
+\label{ceteste}
+\end{table}
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Algoritmo                 & EQM     & $R^2$     & REQM   & SEQ         \\ \hline
+		Regressão Linear - Treino & 0,072   & 0,928  & 0,269  & 552,272     \\ \hline
+		SVR - RBF - Treino        & 0,054   & 0,946  & 0,233  & 415,487     \\ \hline
+		SVR - Linear - Treino     & 0,073   & 0,927  & 0,269  & 555,226     \\ \hline
+		SVR - Sigmoide - Treino   & 299,318 & -0,027 & 17,301 & 2290976,223 \\ \hline
+		SVR - Polinomial - Treino & 0,219   & 0,781  & 0,468  & 1675,504    \\ \hline
+		MLP - Treino              & 0,054   & 0,946  & 0,233  & 416,689     \\ \hline
+	\end{tabular}
+	\caption{Avaliação dos dados de treino da central elétrica.}
+	\label{cetreino}
+\end{table}
+
+Comparando as medidas para todos os algoritmos aplicados ao dataset da central elétrica é possível observar que todos, exceto o SVR - Sigmoide, apresentam bons resultados em ambas bases, ficando bem próximos aos valores reais, isto é demonstrado pelo baixo valor de EQM e alto $R^2$, por exemplo.
+
+\begin{table}[h]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Algoritmo                & EQM       & $R^2$         & REQM    & SEQ           \\ \hline
+		Regressão Linear - Teste & 0,593     & 0,406      & 0,77    & 1185,398      \\ \hline
+		SVR - RBF - Teste        & 0,6       & 0,399      & 0,774   & 1199,215      \\ \hline
+		SVR - Linear - Teste     & 0,601     & 0,397      & 0,775   & 1202,513      \\ \hline
+		SVR - Sigmoide - Teste   & 51226,694 & -51370,514 & 226,333 & 102453388,722 \\ \hline
+		SVR - Polinomial - Teste & 0,698     & 0,3        & 0,835   & 1395,272      \\ \hline
+		MLP - Teste              & 0,583     & 0,415      & 0,764   & 1166,166      \\ \hline
+	\end{tabular}
+	\caption{Avaliação dos dados de teste do tempo.}
+	\label{tempoteste}
+\centering
+\end{table}
+
+\begin{table}[h]
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Algoritmo                 & EQM       & $R^2$         & REQM    & SEQ           \\ \hline
+		Regressão Linear - Treino & 0,585     & 0,416      & 0,765   & 4677,922      \\ \hline
+		SVR - RBF - Treino        & 0,577     & 0,423      & 0,76    & 4618,342      \\ \hline
+		SVR - Linear - Treino     & 0,592     & 0,408      & 0,769   & 4736,851      \\ \hline
+		SVR - Sigmoide - Treino   & 52816,201 & -52785,446 & 229,818 & 422529610,722 \\ \hline
+		SVR - Polinomial - Treino & 0,755     & 0,245      & 0,869   & 6040,982      \\ \hline
+		MLP - Treino              & 0,575     & 0,425      & 0,758   & 4599,792      \\ \hline
+	\end{tabular}
+	\caption{Avaliação dos dados de treino do tempo.}
+	\label{tempotreino}
+	\centering
+\end{table}
+
+Avaliando os resultados obtidos para o dataset do tempo, presentes nas Tabelas~\ref{tempoteste} e \ref{tempotreino}, de teste e treino, respectivamente, é possivel concluir que o mesmo não ocorre aqui, apresentando dados mais esparsos, tendo todas as medidas mais elevados, contudo ainda sim apresentam baixos valores de EQM e médio $R^2$.
+
+Olhando para os resultado nas bases de teste e treino, para a primeira base de dados os algoritmos MLP e SVR - RBF apresentaram resultados bem próximos, com uma ligeira vantagem para o MLP. Na segunda base os algoritmos MLP e Regressão Linear tiveram também resultados muito próximos, novamente com uma pequena vantagem para o MLP. Portanto, em termos gerais para os dois \textit{datasets} o MLP se saiu melhor.
