@@ -1,0 +1,24 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.7 }
+
+\bibitem[Padua et al. 2018]{DBLP:conf/bracis/PaduaCCR18}
+\abntrefinfo{Padua et al.}{PADUA et al.}{2018a}
+{PADUA, R. de et al. Exploring the data using extended association rule
+  network. In:  \emph{7th Brazilian Conference on Intelligent Systems, {BRACIS}
+  2018, S{\~{a}}o Paulo, Brazil, October 22-25, 2018}. [s.n.], 2018. p.
+  330--335. Dispon{\'\i}vel em:
+  \url{https://doi.org/10.1109/BRACIS.2018.00064}.}
+
+\bibitem[Padua et al. 2018]{DBLP:conf/ismir/PaduaCRS18}
+\abntrefinfo{Padua et al.}{PADUA et al.}{2018b}
+{PADUA, R. de et al. Exploring musical relations using association rule
+  networks. In:  \emph{Proceedings of the 19th International Society for Music
+  Information Retrieval Conference, {ISMIR} 2018, Paris, France, September
+  23-27, 2018}. [s.n.], 2018. p. 400--406. Dispon{\'\i}vel em:
+  \url{http://ismir2018.ircam.fr/doc/pdfs/268\\_Paper.pdf}.}
+
+\end{thebibliography}

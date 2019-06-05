@@ -1,0 +1,16 @@
+\chapter{Desenvolvimento}\label{cap_desenv}
+
+Para o desenvolvimento das atividades inicialmente foram escolhidos duas bases bases de dados. A primeira base a ser utilizada corresponde a dados de \textit{reviews} de um E-Commerce de Roupas Femininas contendo informações como idade, avaliação, categoria que o produto pertence, entre outras; A segunda base é composta dados educacionais que é coletado do sistema de gerenciamento de aprendizado, nela há dados como genero, nacionalidade, número de vezes que o aluno levanta a mão, entre outros dados.
+
+\section{Pré-processamento e Visualização}
+Ambas bases haviam dados categóricos e numéricos, na primeira base alguns atributos numéricos foram removidos e outros foram discretizados, ainda na primeira base também foram removidas transações que continham item (atributos=valor) faltantes; Para a segunda base visualizou através de um \textit{boxplot} que os dados numéricos estavam variando de 0 a 100 com uma média diferente para cada atributo, desta forma todos os dados numéricos foram discretizados em categorias binárias (abaixo ou acima média do atributo).
+
+Para a aplicação dos algoritmos também transformou-se os dados do formato dataframe para um array da biblioteca Numpy.
+
+\section{Regras de Associação}
+
+Para aplicação do algoritmo Apriori inicialmente transformou-se os dados para um formato transacional utilizando TransactionEncoder, dessa forma utilizou-se o algoritmo apriori implementado na biblioteca mlxtend para extração dos \textit{itemsets} frequentes e $association_rules$ para extração das regras com confiança acima do corte.
+
+Para aplicação Fp-Growth primeiramente implementou-se duas funções cujo propósito era: a. verificação de suporte e b. aplicação, cálculos das medidas. Nesta etapa algumas dificuldades foram encontradas uma vez que a implementação do algoritmo $fp_growth$ baixada pelo indexador de pacotes de python PyPI não retornava todas as medidas, portanta algumas tiveram que ser calculadas o que gerou alguns problemas ao se buscar os suportes do antecedente e consequente.
+
+\section{Avaliação}
